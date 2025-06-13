@@ -2,7 +2,21 @@
 
 const { Duda } = require('@dudadev/partner-api');
 
+function setCorsHeaders(res) {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // You can restrict this later to your Duda domain
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  }
+
 export default async function handler(req, res) {
+    setCorsHeaders(res); // Add CORS headers first
+
+  // Handle preflight request
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+  
   const uname = process.env.DUDA_API_USERNAME;
   const pass = process.env.DUDA_API_PASSWORD;
 
